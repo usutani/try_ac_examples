@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+big   = User.create! name: 'The Notorious B.I.G.'
+snoop = User.create! name: 'Snoop Dogg'
+flex  = User.create! name: 'Funkmaster Flex'
+ice   = User.create! name: 'Ice Cube'
