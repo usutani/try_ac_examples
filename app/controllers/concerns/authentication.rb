@@ -17,4 +17,9 @@ module Authentication
         @current_user = authenticated_user
       end
     end
+
+    def unauthenticate_user
+      @current_user = nil
+      cookies.delete(:user_id)
+    end
  end
