@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'messages/index'
+  get 'messages/show'
   resource :session, only: %i[new create destroy]
   resources :examples, only: :index
 
