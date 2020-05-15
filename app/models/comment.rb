@@ -1,15 +1,6 @@
 class Comment < ApplicationRecord
-  belongs_to :user
   belongs_to :message
+  belongs_to :user
 
-  after_commit do
-    comment = CommentsController.render(
-      partial: 'comments/comment',
-      locals: { comment: self }
-    )
-    ActionCable.server.broadcast(
-      "messages:#{message_id}:comments",
-      comment: comment
-    )
-  end
+  after_commit { CommentRelayJob.perform_later(self) }
 end
