@@ -14,7 +14,15 @@ consumer.subscriptions.create("CommentsChannel", {
   },
 
   received(data) {
-    // Called when there's incoming data on the websocket for this channel
+    const collection = this.collection()
+    if (!collection) {
+      return
+    }
+    const comment = data.comment
+    if (this.userIsCurrentUser(comment)) {
+      return
+    }
+    collection.insertAdjacentHTML('beforeend', comment)
   },
 
   collection() {
@@ -45,5 +53,21 @@ consumer.subscriptions.create("CommentsChannel", {
         this.followCurrentMessage()
       })
     }
+  },
+
+  userIsCurrentUser(commentHtmlString) {
+    const comment = this.createElementFromHtmlString(commentHtmlString)
+    const commentUserId = comment.getAttribute('data-user-id')
+    return commentUserId === this.currentUserId()
+  },
+
+  createElementFromHtmlString(htmlString) {
+    const div = document.createElement('div')
+    div.innerHTML = htmlString
+    return div.firstElementChild
+  },
+
+  currentUserId() {
+    return document.getElementsByName('current-user')[0].getAttribute('id')
   },
 });
