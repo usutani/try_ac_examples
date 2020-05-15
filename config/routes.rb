@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
-  get 'examples/index'
   resource :session, only: %i[new create]
+  resources :examples, only: :index
+
+  root 'examples#index'
 end
