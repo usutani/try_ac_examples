@@ -15,6 +15,10 @@ module Authentication
       if authenticated_user = User.find_by(id: user_id)
         cookies.encrypted[:user_id] ||= user_id
         @current_user = authenticated_user
+      else
+        @current_user = nil
+        cookies.delete(:user_id)
+        nil
       end
     end
 
