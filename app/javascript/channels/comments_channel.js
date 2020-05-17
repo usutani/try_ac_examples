@@ -1,3 +1,4 @@
+import CableReady from 'cable_ready'
 import consumer from "./consumer"
 
 consumer.subscriptions.create("CommentsChannel", {
@@ -14,15 +15,9 @@ consumer.subscriptions.create("CommentsChannel", {
   },
 
   received(data) {
-    const collection = this.collection()
-    if (!collection) {
-      return
+    if (data.cableReady) {
+      CableReady.perform(data.operations)
     }
-    const comment = data.comment
-    if (this.userIsCurrentUser(comment)) {
-      return
-    }
-    collection.insertAdjacentHTML('beforeend', comment)
   },
 
   collection() {
